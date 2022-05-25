@@ -1,6 +1,6 @@
 {
   "name": "fuel-soap-fork-munawwar",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "Node library for performing SOAP API calls to Salesforce Marketing Cloud (formerly ExactTarget). Forked from github.com:salesforcefuel/FuelSDK-Node-SOAP.",
   "main": "./lib/fuel-soap.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Munawwar/FuelSDK-Node-SOAP.git"
+    "url": "git@github.com:altayer-digital/FuelSDK-Node-SOAP.git"
   },
   "author": "Aydrian J. Howard <ahoward@exacttarget.com>",
   "license": "BSD-3-Clause",
