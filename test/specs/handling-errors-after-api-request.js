@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2016, Salesforce.com, Inc.
+ * Copyright (c) 2018, salesforce.com, inc.
  * All rights reserved.
- *
- * Legal Text is available at https://github.com/forcedotcom/Legal/blob/master/License.txt
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
 
 'use strict';
@@ -31,7 +31,7 @@ describe('handling errors after request has been made to API', function() {
 		});
 
 		soapClient._buildEnvelope = sinon.stub();
-		sinon.stub(soapClient.AuthClient, 'getAccessToken', function(options, cb) {
+		sinon.stub(soapClient.AuthClient, 'getAccessToken').callsFake(function(options, cb) {
 			cb(null, { accessToken: 12345 });
 		});
 
@@ -69,10 +69,10 @@ describe('handling errors after request has been made to API', function() {
 			});
 
 			soapClient._buildEnvelope = sinon.stub();
-			sinon.stub(soapClient.AuthClient, 'getAccessToken', function(options, cb) {
+			sinon.stub(soapClient.AuthClient, 'getAccessToken').callsFake(function(options, cb) {
 				cb(null, { accessToken: 12345 });
 			});
-			sinon.stub(soapClient, '_parseResponse', function(key, body, cb) {
+			sinon.stub(soapClient, '_parseResponse').callsFake(function(key, body, cb) {
 				cb(parseResponseError, null);
 			});
 		});

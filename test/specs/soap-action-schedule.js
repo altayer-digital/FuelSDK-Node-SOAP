@@ -11,15 +11,34 @@ var assert     = require('assert');
 var proxyquire = require('proxyquire');
 var sinon      = require('sinon');
 
-describe('SOAP Action - delete', function() {
+describe('SOAP Action - schedule', function() {
 	var FuelSoap;
 	var soapRequestSpy;
 	var parsedOptions = { parsedOptions: true };
 	var simpleVerifyTestCases = [
-		{ property: 'action', expected: 'Delete' }
-		, { property: 'key', expected: 'DeleteResponse' }
+		{ property: 'action', expected: 'Schedule' }
+		, { property: 'key', expected: 'ScheduleResponseMsg' }
 		, { property: 'retry', expected: true }
 		, { property: 'reqOptions', expected: parsedOptions }
+	];
+
+	var exampleSchedule = {
+		Recurrence: {
+			$: {'xsi:type': 'MinutelyRecurrence'},
+			MinutelyRecurrencePatternType: 'Interval',
+			MinuteInterval: '10'
+		},
+		RecurrenceType: 'Minutely',
+		RecurrenceRangeType: 'EndAfter',
+		StartDateTime: '2019-04-10T10:10:00.046+01:00',
+		Occurrences: '999999'
+	};
+	var exampleInteractions =[ 
+		{
+			Interaction: {
+				ObjectID: '1234'
+			}
+		}
 	];
 
 	beforeEach(function() {
@@ -34,49 +53,37 @@ describe('SOAP Action - delete', function() {
 	afterEach(function() {
 		FuelSoap.prototype.soapRequest.restore();
 	});
-
 	simpleVerifyTestCases.forEach(function(testCase) {
 		it('should call soapRequest with correct ' + testCase.property, function() {
 			// Act
-			FuelSoap.prototype.delete('Test', { props: true }, { options: true }, function() {});
-
+			FuelSoap.prototype.schedule(
+				'Test', 
+				exampleSchedule,
+				exampleInteractions,
+				'start', 
+				{ options: true }, 
+				function() {});
 			// Assert
 			assert.equal(soapRequestSpy.args[0][0][testCase.property], testCase.expected);
 		});
 	});
-
 	it('should pass correct body to soapRequest', function() {
-		// Arrange
-		var sampleOptions = { options: true, moar: false };
-		var sampleProps   = { props: true };
 
 		// Act
-		FuelSoap.prototype.delete('Test', sampleProps, sampleOptions, function() {});
-
+		FuelSoap.prototype.schedule('Test', exampleSchedule, exampleInteractions,'start',{ options: true } , function() {});
 		// Assert
 		var actualObj = soapRequestSpy.args[0][0].req;
-		assert.equal(actualObj.DeleteRequest.Options, sampleOptions);
-		assert.equal(actualObj.DeleteRequest.Objects, sampleProps);
-		assert.ok(!actualObj.DeleteRequest.Options.QueryAllAccounts);
+		assert.equal(actualObj.ScheduleRequestMsg.Schedule, exampleSchedule);
+		assert.equal(actualObj.ScheduleRequestMsg.Interactions, exampleInteractions);
+		assert.ok(!actualObj.ScheduleRequestMsg.Options.QueryAllAccounts);
 	});
 
-	it('should pass callback to soapRequest when props', function() {
+	it('should pass callback to soapRequest when options', function() {
 		// Arrange
 		var sampleCallback = sinon.spy();
 
 		// Act
-		FuelSoap.prototype.delete('Test', { data: true }, sampleCallback);
-
-		// Assert
-		assert.ok(soapRequestSpy.calledWith(sinon.match.object, sampleCallback));
-	});
-
-	it('should pass callback to soapRequest when props and options', function() {
-		// Arrange
-		var sampleCallback = sinon.spy();
-
-		// Act
-		FuelSoap.prototype.delete('Test', { data: true }, { options: true }, sampleCallback);
+		FuelSoap.prototype.schedule('Test', exampleSchedule, exampleInteractions,'start', { options: true }, sampleCallback);
 
 		// Assert
 		assert.ok(soapRequestSpy.calledWith(sinon.match.object, sampleCallback));
@@ -85,13 +92,12 @@ describe('SOAP Action - delete', function() {
 	it('should add QueryAllAccounts to body when option passed', function() {
 		// Arrange
 		var sampleOptions = { queryAllAccounts: true };
-		var sampleProps   = { props: true };
 
 		// Act
-		FuelSoap.prototype.delete('Test', sampleProps, sampleOptions, function() {});
+		FuelSoap.prototype.schedule('Test', exampleSchedule, exampleInteractions,'start',sampleOptions , function() {});
 
 		// Assert
 		var actualObj = soapRequestSpy.args[0][0].req;
-		assert.ok(actualObj.DeleteRequest.Options.QueryAllAccounts);
+		assert.ok(actualObj.ScheduleRequestMsg.Options.QueryAllAccounts);
 	});
 });

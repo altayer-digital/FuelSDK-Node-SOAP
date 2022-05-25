@@ -1,34 +1,34 @@
 {
   "name": "fuel-soap-fork-munawwar",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "Node library for performing SOAP API calls to Salesforce Marketing Cloud (formerly ExactTarget). Forked from github.com:salesforcefuel/FuelSDK-Node-SOAP.",
   "main": "./lib/fuel-soap.js",
   "scripts": {
-    "test": "grunt jshint && node ./node_modules/mocha/bin/mocha --reporter=spec test/specs/*.js"
+    "test": "node ./node_modules/.bin/grunt jshint && node ./node_modules/.bin/mocha --reporter=spec test/specs/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Munawwar/FuelSDK-Node-SOAP.git"
+    "url": "git@github.com:altayer-digital/FuelSDK-Node-SOAP.git"
   },
   "author": "Aydrian J. Howard <ahoward@exacttarget.com>",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "body-parser": "~1.14.2",
-    "grunt": "~0.4.5",
-    "grunt-bump": "~0.0.14",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-jshint": "~0.12.0",
-    "mocha": "~2.4.5",
-    "proxyquire": "~1.7.4",
-    "sinon": "~1.17.3"
+    "body-parser": "^1.17.1",
+    "grunt": "^1.0.1",
+    "grunt-bump": "^0.8.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "mocha": "^5.0.5",
+    "proxyquire": "^1.8.0",
+    "sinon": "^5.0.1"
   },
   "dependencies": {
-    "fuel-auth": "~2.1.3",
-    "lodash.clone": "~4.3.1",
-    "lodash.isempty": "~4.1.3",
-    "lodash.isplainobject": "~4.0.3",
-    "lodash.merge": "~4.3.2",
-    "request": "~2.74.0",
-    "xml2js": "~0.4.16"
+    "fuel-auth": "^3.3.0",
+    "lodash.clone": "^4.5.0",
+    "lodash.isempty": "^4.4.0",
+    "lodash.isplainobject": "^4.0.3",
+    "lodash.merge": "^4.6.0",
+    "request": "^2.81.0",
+    "xml2js": "^0.4.16"
   }
 }

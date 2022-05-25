@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2016, Salesforce.com, Inc.
+ * Copyright (c) 2018, salesforce.com, inc.
  * All rights reserved.
- *
- * Legal Text is available at https://github.com/forcedotcom/Legal/blob/master/License.txt
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
 
 'use strict';
@@ -91,7 +91,7 @@ describe('General Tests', function() {
 			request: requestSpy
 		});
 		var client = new FuelSoap(initOptions);
-		sinon.stub(client.AuthClient, 'getAccessToken', function(opts, cb) {
+		sinon.stub(client.AuthClient, 'getAccessToken').callsFake(function(opts, cb) {
 			cb(null, { accessToken: 123456 });
 		});
 
@@ -128,9 +128,7 @@ describe('General Tests', function() {
 		'configure'
 		, 'extract'
 		, 'getSystemStatus'
-		, 'perform'
 		, 'query'
-		, 'schedule'
 		, 'versionInfo'
 	];
 

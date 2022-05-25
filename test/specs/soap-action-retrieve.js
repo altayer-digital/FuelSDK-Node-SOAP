@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2016, Salesforce.com, Inc.
+ * Copyright (c) 2018, salesforce.com, inc.
  * All rights reserved.
- *
- * Legal Text is available at https://github.com/forcedotcom/Legal/blob/master/License.txt
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
 
 'use strict';
@@ -90,7 +90,7 @@ describe('SOAP Action - retrieve', function() {
 			// it's not written this way, but it will be
 
 			beforeEach(function() {
-				sinon.stub(FuelSoap.prototype, '_parseFilter', function(filter) { return filter; });
+				sinon.stub(FuelSoap.prototype, '_parseFilter').callsFake(function(filter) { return filter; });
 			});
 
 			afterEach(function() {
@@ -158,6 +158,19 @@ describe('SOAP Action - retrieve', function() {
 				// Assert
 				assert.deepEqual(soapRequestSpy.args[0][0].req.RetrieveRequestMsg.RetrieveRequest.Filter, sampleCallback.filter);
 			});
+
+			it('should set ContinueRequest to options.continueRequest in body (RetrieveRequestMsg > RetrieveRequest)', function() {
+				// Arrange
+				var sampleOptions = {
+					continueRequest: '<continue request stuff>'
+				};
+
+				// Act
+				FuelSoap.prototype.retrieve('Test', sampleOptions, function() {});
+
+				// Assert
+				assert.equal(soapRequestSpy.args[0][0].req.RetrieveRequestMsg.RetrieveRequest.ContinueRequest, sampleOptions.continueRequest);
+			});
 		});
 
 		describe('argument 3 (0 based index)', function() {
@@ -170,7 +183,7 @@ describe('SOAP Action - retrieve', function() {
 					clientIDs: [1,2,3,4],
 					filter: { filter: 'yes i am' }
 				};
-				sinon.stub(FuelSoap.prototype, '_parseFilter', function(filter) { return filter; });
+				sinon.stub(FuelSoap.prototype, '_parseFilter').callsFake(function(filter) { return filter; });
 			});
 
 			afterEach(function() {
@@ -199,6 +212,17 @@ describe('SOAP Action - retrieve', function() {
 
 				// Assert
 				assert.equal(soapRequestSpy.args[0][0].req.RetrieveRequestMsg.RetrieveRequest.Filter, sampleOptions.filter);
+			});
+
+			it('should set ContinueRequest to options.continueRequest in body (RetrieveRequestMsg > RetrieveRequest)', function() {
+				// Arrange
+				sampleOptions.continueRequest = '<continue request stuff>';
+
+				// Act
+				FuelSoap.prototype.retrieve('Test', sampleProps, sampleOptions, function() {});
+
+				// Assert
+				assert.equal(soapRequestSpy.args[0][0].req.RetrieveRequestMsg.RetrieveRequest.ContinueRequest, sampleOptions.continueRequest);
 			});
 		});
 	});
